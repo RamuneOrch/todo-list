@@ -5,12 +5,14 @@ import com.project.todolist.dto.ResponseDto;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
 import com.project.todolist.entity.User;
+import com.project.todolist.security.UserDetailsImpl;
 import com.project.todolist.service.CommonResponse;
 import com.project.todolist.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,11 +31,11 @@ public class PostController {
 
     @PostMapping("/posts")
     public ResponseEntity<CommonResponse<PostResponseDto>> createPost(
-            @RequestBody PostRequestDto req, User user) {
+            @RequestBody PostRequestDto req, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok()
                 .body(CommonResponse.<PostResponseDto>builder().statusCode(HttpStatus.OK.value())
                         .msg("일정 생성 완료")
-                        .data(postService.createPost(req,user))
+                        .data(postService.createPost(req,userDetails.getUser()))
                         .build()
                 );
     }

@@ -64,25 +64,19 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                         .permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/api/user/**")
+                        .requestMatchers("/todos/**")
                         .permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
         http.formLogin((formLogin) ->
                 formLogin
-                        .loginPage("/api/user/login-page").permitAll()
+                        .loginProcessingUrl("/todos/user/login").permitAll()
         );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        // 접근 불가 페이지
-        http.exceptionHandling((exceptionHandling) ->
-                exceptionHandling
-                        .accessDeniedPage("/forbidden.html")
-        );
 
         return http.build();
     }
