@@ -126,7 +126,7 @@ public class DBTest {
     }
 
     @Test
-    @DisplayName("댓글 전체 조회")
+    @DisplayName("특정 게시물 댓글 전체 조회")
     public void getAllComment() throws Exception {
         //given
         User user = userRepository.findById(3L).orElseThrow();
@@ -138,5 +138,15 @@ public class DBTest {
             System.out.println(comment.getComment());
         }
         //then
+    }
+
+    @Test
+    @DisplayName("특정 댓글 삭제 테스트")
+    public void deleteCommentTest() throws Exception{
+      //given
+
+      //when
+
+      //then
     }
 }
