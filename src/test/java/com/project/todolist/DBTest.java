@@ -69,7 +69,7 @@ public class DBTest {
     @Transactional
     @DisplayName("회원이 가지고 있는 일정을 수정날짜를 기준으로 내림차순으로 전체 조회")
     public void getPostAll() {
-        List<Post> postList = postRepository.findAllByUserIdOrderByModifiedAtDesc(1L);
+        List<Post> postList = postRepository.findAllByUserIdOrderByModifiedAtDesc(2L);
 
         for (Post post : postList) {
             System.out.println(post.getTitle());

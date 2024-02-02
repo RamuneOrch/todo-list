@@ -3,6 +3,7 @@ package com.project.todolist.dto.post;
 import com.project.todolist.entity.Post;
 import com.project.todolist.entity.TimeStamped;
 import com.project.todolist.entity.User;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
