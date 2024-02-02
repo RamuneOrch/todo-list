@@ -1,5 +1,8 @@
 package com.project.todolist.dto.comment;
 
-public class CommentRequestDto {
+import lombok.Getter;
 
+@Getter
+public class CommentRequestDto {
+    private String comment;
 }

@@ -1,5 +1,6 @@
 package com.project.todolist.entity;
 
+import com.project.todolist.dto.comment.CommentRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,12 +9,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "comments")
+@NoArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +31,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
+
+    public Comment(CommentRequestDto req) {
+        this.comment = req.getComment();
+    }
 }

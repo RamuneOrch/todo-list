@@ -30,6 +30,6 @@ public class UserService {
         // 사용자 등록
         User user = new User(username, password);
         userRepository.save(user);
-        return new UserResponseDto("회원가입 성공",user);
+        return new UserResponseDto(user);
     }
 }

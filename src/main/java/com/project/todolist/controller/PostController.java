@@ -40,42 +40,42 @@ public class PostController {
                 );
     }
 
-    @GetMapping("/posts/postId/{postId}/userId/{userId}")
-    public ResponseEntity<CommonResponse<PostResponseDto>> getPostById(User user, @PathVariable Long postId,@PathVariable Long userId) {
+    @GetMapping("/posts/postId/{postId}")
+    public ResponseEntity<CommonResponse<PostResponseDto>> getPostById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return ResponseEntity.ok()
                 .body(CommonResponse.<PostResponseDto>builder().statusCode(HttpStatus.OK.value())
                         .msg("특정 일정 조회 완료")
-                        .data(postService.getPostById(postId, userId ,user))
+                        .data(postService.getPostById(postId, userDetails.getUser()))
                         .build()
                 );
     }
 
-    @GetMapping("/posts/{id}")
-    public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPosts(User user, @PathVariable Long id) {
+    @GetMapping("/posts")
+    public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok()
                 .body(CommonResponse.<List<PostResponseDto>>builder().statusCode(HttpStatus.OK.value())
                         .msg("회원의 일정 전체 조회")
-                        .data(postService.getPosts(id, user))
+                        .data(postService.getPosts(userDetails.getUser()))
                         .build()
                 );
     }
 
-    @PatchMapping("/posts/postId/{postId}/userId/{userId}")
-    public ResponseEntity<CommonResponse<PostResponseDto>> updatePostById(User user, @PathVariable Long postId,@PathVariable Long userId, @RequestBody PostRequestDto req) {
+    @PatchMapping("/posts/postId/{postId}")
+    public ResponseEntity<CommonResponse<PostResponseDto>> updatePostById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId,@RequestBody PostRequestDto req) {
         return ResponseEntity.ok()
                 .body(CommonResponse.<PostResponseDto>builder().statusCode(HttpStatus.OK.value())
                         .msg("특정 일정 수정 완료")
-                        .data(postService.updatePostById(req,postId, userId ,user))
+                        .data(postService.updatePostById(req,postId,userDetails.getUser()))
                         .build()
                 );
     }
 
-    @DeleteMapping("/posts/postId/{postId}/userId/{userId}")
-    public ResponseEntity<CommonResponse> deleteById(User user, @PathVariable Long postId,@PathVariable Long userId) {
+    @DeleteMapping("/posts/postId/{postId}")
+    public ResponseEntity<CommonResponse> deleteById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         CommonResponse<PostResponseDto> response;
 
         try {
-            postService.deleteById(postId, userId, user);
+            postService.deleteById(postId, userDetails.getUser());
 
             response = CommonResponse.<PostResponseDto>builder()
                     .statusCode(HttpStatus.OK.value())

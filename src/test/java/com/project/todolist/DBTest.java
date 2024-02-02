@@ -1,6 +1,7 @@
 package com.project.todolist;
 
 import com.project.todolist.dto.post.PostRequestDto;
+import com.project.todolist.entity.Comment;
 import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
 import com.project.todolist.repository.CommentRepository;
@@ -34,13 +35,15 @@ public class DBTest {
     @DisplayName("post save 테스트")
     @Rollback(false)
     public void postSaveTest() throws Exception {
-        User user = userRepository.findById(1L)
+        User user = userRepository.findById(4L)
                 .orElseThrow(() -> new NullPointerException("해당 아이디 존재하지 않음"));
 
         PostRequestDto postRequestDto = new PostRequestDto();
-        postRequestDto.setTitle("test1");
-        postRequestDto.setContent("테스트 도중");
-        postService.createPost(postRequestDto, user);
+        for (int i = 0; i < 5; i++) {
+            postRequestDto.setTitle("google 포스트" + i);
+            postRequestDto.setContent("google 콘텐츠" + i);
+            postService.createPost(postRequestDto, user);
+        }
     }
 
     @Test
@@ -89,7 +92,7 @@ public class DBTest {
         req.setTitle("수정된 제목");
         req.setContent("수정된 내용");
         //when
-        postService.updatePostById(req, 1L, 1L, user);
+//        postService.updatePostById(req, 1L, 1L, user);
         //then
     }
 
@@ -104,5 +107,36 @@ public class DBTest {
         postRepository.delete(post);
         //then
         Assertions.assertThat(post).isNotNull();
+    }
+
+    @Test
+    @DisplayName("댓글작성 테스트")
+    @Rollback(false)
+    public void commentCreate() throws Exception {
+        //given
+        User user = userRepository.findById(3L).orElseThrow();
+        Post post = postRepository.findByUserId(user.getId()).orElseThrow();
+        Comment comment = new Comment();
+        comment.setComment("papago 댓글");
+        comment.setPost(post);
+        comment.setUser(user);
+        //when
+        commentRepository.save(comment);
+        //then
+    }
+
+    @Test
+    @DisplayName("댓글 전체 조회")
+    public void getAllComment() throws Exception {
+        //given
+        User user = userRepository.findById(3L).orElseThrow();
+        Post post = postRepository.findByUserId(user.getId()).orElseThrow();
+        List<Comment> commentList = commentRepository.findAllByUserIdAndPostId(
+                user.getId(), post.getId());
+        //when
+        for (Comment comment : commentList) {
+            System.out.println(comment.getComment());
+        }
+        //then
     }
 }

@@ -18,46 +18,37 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
 
     public PostResponseDto createPost(PostRequestDto req, User user) {
         Post post = new Post(req);
-        User user1 = findUserById(2L);
-        post.setUser(user1);
+        post.setUser(user);
+        log.info(String.valueOf(user.getId()));
         postRepository.save(post);
-        return new PostResponseDto(post, user1);
+        return new PostResponseDto(post, user);
     }
 
-    public PostResponseDto getPostById(Long postId, Long userId, User user) {
-        Post post = postRepository.findByIdAndUserId(postId, userId)
+    public PostResponseDto getPostById(Long postId, User user) {
+        Post post = postRepository.findByIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new NullPointerException("존재 X"));
-        User user1 = findUserById(userId);
-        return new PostResponseDto(post, user1);
+        return new PostResponseDto(post, user);
     }
 
-    public List<PostResponseDto> getPosts(Long userId, User user) {
-        User user1 = findUserById(userId);
-        return postRepository.findAllByUserIdOrderByModifiedAtDesc(userId).stream()
-                .map(e -> new PostResponseDto(e, user1)).toList();
-    }
-
-    public User findUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new NullPointerException("해당 아이디 존재하지 않음"));
+    public List<PostResponseDto> getPosts(User user) {
+        return postRepository.findAllByUserIdOrderByModifiedAtDesc(user.getId()).stream()
+                .map(e -> new PostResponseDto(e, user)).toList();
     }
 
     @Transactional
-    public PostResponseDto updatePostById(PostRequestDto req, Long postId, Long userId, User user) {
-        User user1 = findUserById(userId);
-        Post post = postRepository.findByIdAndUserId(postId, userId)
+    public PostResponseDto updatePostById(PostRequestDto req, Long postId, User user) {
+        Post post = postRepository.findByIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new NullPointerException("존재 X"));
         post.update(req);
-        return new PostResponseDto(post, user1);
+        return new PostResponseDto(post, user);
     }
 
-    public void deleteById(Long postId, Long userId, User user) {
-        Post post = postRepository.findByIdAndUserId(postId, userId)
+    public void deleteById(Long postId, User user) {
+        Post post = postRepository.findByIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new NullPointerException("존재 x"));
         postRepository.delete(post);
     }
