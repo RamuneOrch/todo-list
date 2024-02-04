@@ -24,7 +24,7 @@ public class CommentController {
 
     @PostMapping("/comment/postId/{postId}")
     public ResponseEntity<CommentResponseDto> createComment(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody CommentRequestDto req,@PathVariable Long postId){
-        return ResponseEntity.ok().body(commentService.createComment(user.getUser(),req, postId));
+        return ResponseEntity.ok().body(commentService.createComment(user.getUser(),req,postId));
     }
 
     @PutMapping("/comment/commentId/{commentId}")
