@@ -7,5 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NotCommentUserException extends RuntimeException{
     public NotCommentUserException(String message){
         super(message);
+        System.out.println(message);
     }
 }
