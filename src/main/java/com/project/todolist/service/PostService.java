@@ -1,11 +1,17 @@
 package com.project.todolist.service;
 
+import com.project.todolist.Exception.ContentsExistenceException;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
+import com.project.todolist.entity.Comment;
 import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
+import com.project.todolist.repository.CommentRepository;
 import com.project.todolist.repository.PostRepository;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
 
     public PostResponseDto createPost(PostRequestDto req, User user) {
@@ -29,8 +36,17 @@ public class PostService {
 
     public PostResponseDto getPostById(Long postId, User user) {
         Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new NullPointerException("존재 X"));
-        return new PostResponseDto(post, user);
+                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
+        List<Comment> comments = commentRepository.findAllByPostId(postId);
+        return new PostResponseDto(post, user, getCommentList(comments));
+    }
+
+    private Map<Long,String> getCommentList(List<Comment> comments) {
+        Map<Long,String> commentList = new LinkedHashMap<>();
+        for (Comment comment : comments) {
+            commentList.put(comment.getId(),comment.getComment());
+        }
+        return commentList;
     }
 
     public List<PostResponseDto> getPosts(User user) {
@@ -41,18 +57,14 @@ public class PostService {
     @Transactional
     public PostResponseDto updatePostById(PostRequestDto req, Long postId, User user) {
         Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new NullPointerException("존재 X"));
+                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
         post.update(req);
         return new PostResponseDto(post, user);
     }
 
     public void deleteById(Long postId, User user) {
         Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new NullPointerException("존재 x"));
+                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
         postRepository.delete(post);
     }
-
-//    public void deleteAll(Long postId, Long userId, User user) {
-//        postRepository.
-//    }
 }
