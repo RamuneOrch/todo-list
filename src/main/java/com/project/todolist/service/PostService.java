@@ -5,7 +5,6 @@ import com.project.todolist.dto.post.PostResponseDto;
 import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
 import com.project.todolist.repository.PostRepository;
-import com.project.todolist.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

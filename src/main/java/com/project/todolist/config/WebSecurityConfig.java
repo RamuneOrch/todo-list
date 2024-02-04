@@ -1,8 +1,8 @@
 package com.project.todolist.config;
 
 import com.project.todolist.security.UserDetailsServiceImpl;
-import com.project.todolist.util.JwtAuthenticationFilter;
-import com.project.todolist.util.JwtAuthorizationFilter;
+import com.project.todolist.filter.JwtAuthenticationFilter;
+import com.project.todolist.filter.JwtAuthorizationFilter;
 import com.project.todolist.util.JwtUtil;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -64,17 +64,10 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                         .permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/todos/**","/error")
+                        .requestMatchers("/todos/**","/error") // "/error" 추가
                         .permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
-
-
-
-//        http.formLogin((formLogin) ->
-//                formLogin
-//                        .loginProcessingUrl("/todos/user/login").permitAll()
-//        );
 
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

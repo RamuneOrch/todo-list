@@ -1,7 +1,6 @@
 package com.project.todolist.controller;
 
 import com.project.todolist.dto.user.UserRequestDto;
-import com.project.todolist.dto.user.UserResponseDto;
 import com.project.todolist.service.UserService;
 import jakarta.validation.Valid;
 import java.util.ArrayList;

@@ -1,15 +1,12 @@
 package com.project.todolist.service;
 
 import com.project.todolist.Exception.UserExistenceException;
-import com.project.todolist.config.PasswordConfig;
 import com.project.todolist.dto.user.UserRequestDto;
 import com.project.todolist.dto.user.UserResponseDto;
 import com.project.todolist.entity.User;
 import com.project.todolist.repository.UserRepository;
-import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

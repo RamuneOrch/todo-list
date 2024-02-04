@@ -1,10 +1,7 @@
 package com.project.todolist.controller;
 
-import com.project.todolist.dto.RequestDto;
-import com.project.todolist.dto.ResponseDto;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
-import com.project.todolist.entity.User;
 import com.project.todolist.security.UserDetailsImpl;
 import com.project.todolist.service.CommonResponse;
 import com.project.todolist.service.PostService;
@@ -91,29 +88,5 @@ public class PostController {
         }
         return ResponseEntity.ok().body(response);
     }
-
-
-    // 전체 일정 삭제
-//    @DeleteMapping("/posts/postId/{postId}/userId/{userId}")
-//    public ResponseEntity<CommonResponse> deleteAll(User user, @PathVariable Long postId,@PathVariable Long userId) {
-//        CommonResponse<PostResponseDto> response;
-//
-//        try {
-//            postService.deleteAll(postId, userId, user);
-//
-//            response = CommonResponse.<PostResponseDto>builder()
-//                    .statusCode(HttpStatus.OK.value())
-//                    .msg("전체 일정 삭제 완료")
-//                    .build();
-//
-//        } catch (IllegalArgumentException e) {
-//
-//            response = CommonResponse.<PostResponseDto>builder()
-//                    .statusCode(HttpStatus.BAD_REQUEST.value())
-//                    .msg(e.getMessage())
-//                    .build();
-//        }
-//        return ResponseEntity.ok().body(response);
-//    }
 
 }

@@ -18,6 +18,6 @@ public class UserRequestDto {
 
     @NotNull(message = "password를 입력해주세요")
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
-    @Size(min = 8,max = 15)
+    @Size(min = 8, max = 15)
     private String password;
 }
