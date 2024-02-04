@@ -29,8 +29,8 @@ public class CommentService {
         Comment comment = new Comment(req);
         Post post = postRepository.findByIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new NullPointerException("존재하지 않아용"));
-        comment.setUser(user);
-        comment.setPost(post);
+        comment.updateUser(user);
+        comment.updatePost(post);
         commentRepository.save(comment);
         return new CommentResponseDto(user, comment);
     }
@@ -39,7 +39,7 @@ public class CommentService {
     public CommentResponseDto updateComment(User user, CommentRequestDto req, Long commentId) {
         Comment comment = validateComment(commentId);
         validateUser(user, comment);
-        comment.setComment(req.getComment());
+        comment.updateComment(req.getComment());
         return new CommentResponseDto(user, comment);
     }
 

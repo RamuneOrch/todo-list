@@ -14,7 +14,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "comments")
 @NoArgsConstructor
 public class Comment {
@@ -31,6 +30,18 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
+
+    public void updateUser(User user){
+        this.user = user;
+    }
+
+    public void updatePost(Post post){
+        this.post = post;
+    }
+
+    public void updateComment(String comment){
+        this.comment = comment;
+    }
 
     public Comment(CommentRequestDto req) {
         this.comment = req.getComment();

@@ -14,7 +14,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "posts")
 @NoArgsConstructor
 public class Post extends TimeStamped {
@@ -30,6 +29,10 @@ public class Post extends TimeStamped {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateUser(User user){
+        this.user = user;
+    }
 
     public Post(PostRequestDto req) {
         this.title = req.getTitle();

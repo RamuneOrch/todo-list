@@ -21,7 +21,7 @@ public class PostService {
 
     public PostResponseDto createPost(PostRequestDto req, User user) {
         Post post = new Post(req);
-        post.setUser(user);
+        post.updateUser(user);
         log.info(String.valueOf(user.getId()));
         postRepository.save(post);
         return new PostResponseDto(post, user);
