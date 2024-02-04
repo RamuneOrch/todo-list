@@ -1,5 +1,6 @@
 package com.project.todolist.service;
 
+import com.project.todolist.Exception.CommentIsEmptyException;
 import com.project.todolist.Exception.NotCommentUserException;
 import com.project.todolist.dto.comment.CommentRequestDto;
 import com.project.todolist.dto.comment.CommentResponseDto;
@@ -36,19 +37,22 @@ public class CommentService {
 
     @Transactional
     public CommentResponseDto updateComment(User user, CommentRequestDto req, Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NullPointerException("댓글이 존재하지 않습니다."));
+        Comment comment = validateComment(commentId);
         validateUser(user, comment);
         comment.setComment(req.getComment());
         return new CommentResponseDto(user, comment);
     }
 
     public String deleteComment(User user, Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NullPointerException("댓글이 존재하지 않습니다."));
+        Comment comment = validateComment(commentId);
         validateUser(user, comment);
         commentRepository.delete(comment);
         return "댓글이 삭제되었습니다";
+    }
+
+    private Comment validateComment(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentIsEmptyException("댓글이 존재하지 않습니다."));
     }
 
     private void validateUser(User user, Comment comment) {
