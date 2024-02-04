@@ -6,7 +6,8 @@
 
 # ERD
 
-![image](https://github.com/RamuneOrch/todo-list/assets/65538799/56f90480-85c8-4910-ad63-d6a3b4fc5955)
+![image](https://github.com/RamuneOrch/todo-list/assets/65538799/20b890e0-f6a7-4cbf-9c8c-06e3da13a3df)
+
 
 ------------
 
