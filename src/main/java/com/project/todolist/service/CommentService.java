@@ -1,6 +1,7 @@
 package com.project.todolist.service;
 
 import com.project.todolist.Exception.CommentIsEmptyException;
+import com.project.todolist.Exception.ContentsExistenceException;
 import com.project.todolist.Exception.NotCommentUserException;
 import com.project.todolist.dto.comment.CommentRequestDto;
 import com.project.todolist.dto.comment.CommentResponseDto;
@@ -28,7 +29,7 @@ public class CommentService {
         log.info(user.getUsername());
         Comment comment = new Comment(req);
         Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new NullPointerException("존재하지 않아용"));
+                .orElseThrow(() -> new ContentsExistenceException("존재하지 않아용"));
         comment.updateUser(user);
         comment.updatePost(post);
         commentRepository.save(comment);
