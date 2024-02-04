@@ -14,6 +14,7 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String username;
+    private boolean checkDone;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
@@ -22,6 +23,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.username = user.getUsername();
+        this.checkDone = post.isCheckDone();
         this.createAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
     }

@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
-    List<Post> findAllByUserIdOrderByModifiedAtDesc(long userId);
+    List<Post> findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(long userId);
     Optional<Post> findByIdAndUserId(long postId, long userId);
-
-    Optional<Post> findByUserId(Long id);
 }

@@ -34,7 +34,7 @@ public class PostService {
     }
 
     public List<PostResponseDto> getPosts(User user) {
-        return postRepository.findAllByUserIdOrderByModifiedAtDesc(user.getId()).stream()
+        return postRepository.findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(user.getId()).stream()
                 .map(e -> new PostResponseDto(e, user)).toList();
     }
 
