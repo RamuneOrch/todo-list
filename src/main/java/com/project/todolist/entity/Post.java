@@ -1,13 +1,17 @@
 package com.project.todolist.entity;
 
 import com.project.todolist.dto.post.PostRequestDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +29,9 @@ public class Post extends TimeStamped {
     private String title;
     private String content;
     private boolean checkDone;
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
+    private final List<Comment> commentList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,6 +1,7 @@
 package com.project.todolist.entity;
 
 import com.project.todolist.dto.comment.CommentRequestDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
