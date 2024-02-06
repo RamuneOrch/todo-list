@@ -1,5 +1,6 @@
 package com.project.todolist.controller;
 
+import com.project.todolist.dto.post.PostCheckResponseDto;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
 import com.project.todolist.security.UserDetailsImpl;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +58,18 @@ public class PostController {
                         .statusCode(HttpStatus.OK.value())
                         .msg("회원의 일정 전체 조회")
                         .data(postService.getPosts(userDetails.getUser()))
+                        .build()
+                );
+    }
+
+    @PutMapping("/posts/postId/{postId}")
+    public ResponseEntity<CommonResponse<PostResponseDto>> checkedPost(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+        return ResponseEntity.ok()
+                .body(CommonResponse.<PostResponseDto>builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .msg("일정 완료 버튼")
+                        .data(postService.checkedPost(postId, userDetails.getUser()))
                         .build()
                 );
     }

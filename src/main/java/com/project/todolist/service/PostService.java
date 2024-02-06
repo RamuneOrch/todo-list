@@ -1,6 +1,7 @@
 package com.project.todolist.service;
 
 import com.project.todolist.Exception.ContentsExistenceException;
+import com.project.todolist.dto.post.PostCheckResponseDto;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
 import com.project.todolist.entity.Comment;
@@ -40,6 +41,11 @@ public class PostService {
     }
 
     private Post getPost(Long postId, User user) {
+        Post post = getPostByRepository(postId, user);
+        return post;
+    }
+
+    private Post getPostByRepository(Long postId, User user) {
         Post post = postRepository.findByIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
         return post;
@@ -57,6 +63,12 @@ public class PostService {
         return postRepository.findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(user.getId())
                 .stream()
                 .map(e -> new PostResponseDto(e, user)).toList();
+    }
+    @Transactional
+    public PostResponseDto checkedPost(Long postId, User user){
+        Post post = getPostByRepository(postId, user);
+        post.isChecked();
+        return new PostResponseDto(post,user);
     }
 
     @Transactional

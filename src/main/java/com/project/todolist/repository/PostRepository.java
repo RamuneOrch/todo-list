@@ -9,4 +9,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<Post> findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(long userId);
     Optional<Post> findByIdAndUserId(long postId, long userId);
+
+    Optional<Object> findByUserId(Long id);
 }

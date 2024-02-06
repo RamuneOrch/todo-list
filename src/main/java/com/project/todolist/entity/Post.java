@@ -50,6 +50,9 @@ public class Post extends TimeStamped {
         if (req.getContent() != null) {
             this.content = req.getContent();
         }
-        this.checkDone = req.isCheckDone();
+    }
+
+    public void isChecked(){
+        this.checkDone = !this.checkDone;
     }
 }
