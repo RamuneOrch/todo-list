@@ -30,9 +30,6 @@ public class Post extends TimeStamped {
     private String content;
     private boolean checkDone;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
-    private final List<Comment> commentList = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

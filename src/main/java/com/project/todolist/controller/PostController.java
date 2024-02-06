@@ -32,13 +32,14 @@ public class PostController {
         return ResponseEntity.ok()
                 .body(CommonResponse.<PostResponseDto>builder().statusCode(HttpStatus.OK.value())
                         .msg("일정 생성 완료")
-                        .data(postService.createPost(req,userDetails.getUser()))
+                        .data(postService.createPost(req, userDetails.getUser()))
                         .build()
                 );
     }
 
     @GetMapping("/posts/postId/{postId}")
-    public ResponseEntity<CommonResponse<PostResponseDto>> getPostById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse<PostResponseDto>> getPostById(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return ResponseEntity.ok()
                 .body(CommonResponse.<PostResponseDto>builder().statusCode(HttpStatus.OK.value())
                         .msg("특정 일정 조회 완료")
@@ -48,9 +49,11 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPosts(
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok()
-                .body(CommonResponse.<List<PostResponseDto>>builder().statusCode(HttpStatus.OK.value())
+                .body(CommonResponse.<List<PostResponseDto>>builder()
+                        .statusCode(HttpStatus.OK.value())
                         .msg("회원의 일정 전체 조회")
                         .data(postService.getPosts(userDetails.getUser()))
                         .build()
@@ -58,35 +61,36 @@ public class PostController {
     }
 
     @PatchMapping("/posts/postId/{postId}")
-    public ResponseEntity<CommonResponse<PostResponseDto>> updatePostById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId,@RequestBody PostRequestDto req) {
+    public ResponseEntity<CommonResponse<PostResponseDto>> updatePostById(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId,
+            @RequestBody PostRequestDto req) {
         return ResponseEntity.ok()
                 .body(CommonResponse.<PostResponseDto>builder().statusCode(HttpStatus.OK.value())
                         .msg("특정 일정 수정 완료")
-                        .data(postService.updatePostById(req,postId,userDetails.getUser()))
+                        .data(postService.updatePostById(req, postId, userDetails.getUser()))
                         .build()
                 );
     }
 
     @DeleteMapping("/posts/postId/{postId}")
-    public ResponseEntity<CommonResponse> deleteById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
-        CommonResponse<PostResponseDto> response;
-
+    public ResponseEntity<CommonResponse<Void>> deleteById(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         try {
             postService.deleteById(postId, userDetails.getUser());
 
-            response = CommonResponse.<PostResponseDto>builder()
+            CommonResponse.<PostResponseDto>builder()
                     .statusCode(HttpStatus.OK.value())
                     .msg("특정 일정 삭제 완료")
                     .build();
 
         } catch (IllegalArgumentException e) {
 
-            response = CommonResponse.<PostResponseDto>builder()
+            CommonResponse.<PostResponseDto>builder()
                     .statusCode(HttpStatus.BAD_REQUEST.value())
                     .msg(e.getMessage())
                     .build();
         }
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -24,7 +24,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-
     public CommentResponseDto createComment(User user, CommentRequestDto req, Long postId) {
         log.info(user.getUsername());
         Comment comment = new Comment(req);
@@ -44,11 +43,10 @@ public class CommentService {
         return new CommentResponseDto(user, comment);
     }
 
-    public String deleteComment(User user, Long commentId) {
+    public void deleteComment(User user, Long commentId) {
         Comment comment = validateComment(commentId);
         validateUser(user, comment);
         commentRepository.delete(comment);
-        return "댓글이 삭제되었습니다";
     }
 
     private Comment validateComment(Long commentId) {
@@ -58,7 +56,7 @@ public class CommentService {
 
     private void validateUser(User user, Comment comment) {
         if (!Objects.equals(comment.getUser().getId(), user.getId())) {
-            throw new NotCommentUserException("댓글 작성자만 수정하고나 삭제가 가능합니다.");
+            throw new NotCommentUserException("댓글 작성자만 수정하거나 삭제가 가능합니다.");
         }
     }
 }

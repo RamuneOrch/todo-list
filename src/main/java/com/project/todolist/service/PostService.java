@@ -8,7 +8,6 @@ import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
 import com.project.todolist.repository.CommentRepository;
 import com.project.todolist.repository.PostRepository;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,36 +34,40 @@ public class PostService {
     }
 
     public PostResponseDto getPostById(Long postId, User user) {
-        Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
+        Post post = getPost(postId, user);
         List<Comment> comments = commentRepository.findAllByPostId(postId);
         return new PostResponseDto(post, user, getCommentList(comments));
     }
 
-    private Map<Long,String> getCommentList(List<Comment> comments) {
-        Map<Long,String> commentList = new LinkedHashMap<>();
+    private Post getPost(Long postId, User user) {
+        Post post = postRepository.findByIdAndUserId(postId, user.getId())
+                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
+        return post;
+    }
+
+    private Map<Long, String> getCommentList(List<Comment> comments) {
+        Map<Long, String> commentList = new LinkedHashMap<>();
         for (Comment comment : comments) {
-            commentList.put(comment.getId(),comment.getComment());
+            commentList.put(comment.getId(), comment.getComment());
         }
         return commentList;
     }
 
     public List<PostResponseDto> getPosts(User user) {
-        return postRepository.findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(user.getId()).stream()
+        return postRepository.findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(user.getId())
+                .stream()
                 .map(e -> new PostResponseDto(e, user)).toList();
     }
 
     @Transactional
     public PostResponseDto updatePostById(PostRequestDto req, Long postId, User user) {
-        Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
+        Post post = getPost(postId, user);
         post.update(req);
         return new PostResponseDto(post, user);
     }
 
     public void deleteById(Long postId, User user) {
-        Post post = postRepository.findByIdAndUserId(postId, user.getId())
-                .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
+        Post post = getPost(postId, user);
         postRepository.delete(post);
     }
 }

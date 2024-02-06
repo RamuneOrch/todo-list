@@ -1,7 +1,6 @@
 package com.project.todolist.entity;
 
 import com.project.todolist.dto.comment.CommentRequestDto;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -26,6 +26,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "posts_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     @ManyToOne
