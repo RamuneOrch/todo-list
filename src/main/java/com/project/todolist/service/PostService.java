@@ -1,7 +1,6 @@
 package com.project.todolist.service;
 
 import com.project.todolist.Exception.ContentsExistenceException;
-import com.project.todolist.dto.post.PostCheckResponseDto;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
 import com.project.todolist.entity.Comment;
@@ -64,11 +63,12 @@ public class PostService {
                 .stream()
                 .map(e -> new PostResponseDto(e, user)).toList();
     }
+
     @Transactional
-    public PostResponseDto checkedPost(Long postId, User user){
+    public PostResponseDto checkedPost(Long postId, User user) {
         Post post = getPostByRepository(postId, user);
         post.isChecked();
-        return new PostResponseDto(post,user);
+        return new PostResponseDto(post, user);
     }
 
     @Transactional

@@ -8,11 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommentResponseDto {
+
     private Long id;
     private String username;
     private String comment;
 
-    public CommentResponseDto(User user, Comment comment){
+    public CommentResponseDto(User user, Comment comment) {
         this.id = comment.getId();
         this.username = user.getUsername();
         this.comment = comment.getComment();

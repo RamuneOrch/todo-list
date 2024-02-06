@@ -1,6 +1,5 @@
 package com.project.todolist.controller;
 
-import com.project.todolist.dto.post.PostCheckResponseDto;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
 import com.project.todolist.security.UserDetailsImpl;

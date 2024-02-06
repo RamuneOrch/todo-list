@@ -7,8 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostCheckResponseDto {
+
     private boolean isChecked;
-    public PostCheckResponseDto(Post post){
+
+    public PostCheckResponseDto(Post post) {
 
     }
 }

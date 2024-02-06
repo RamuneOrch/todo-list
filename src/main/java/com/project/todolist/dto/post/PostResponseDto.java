@@ -1,10 +1,8 @@
 package com.project.todolist.dto.post;
 
-import com.project.todolist.entity.Comment;
 import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +18,7 @@ public class PostResponseDto {
     private boolean checkDone;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
-    private Map<Long,String> comments;
+    private Map<Long, String> comments;
 
     public PostResponseDto(Post post, User user) {
         this.id = post.getId();
@@ -32,7 +30,7 @@ public class PostResponseDto {
         this.modifiedAt = post.getModifiedAt();
     }
 
-    public PostResponseDto(Post post, User user, Map<Long,String> comments) {
+    public PostResponseDto(Post post, User user, Map<Long, String> comments) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();

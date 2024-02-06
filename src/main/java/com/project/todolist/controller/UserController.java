@@ -28,7 +28,8 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             List<String> signUpErrorList = new ArrayList<>();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                String defaultError = fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage();
+                String defaultError =
+                        fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage();
                 signUpErrorList.add(defaultError);
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(signUpErrorList);

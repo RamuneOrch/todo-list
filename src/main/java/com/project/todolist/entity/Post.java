@@ -1,20 +1,15 @@
 package com.project.todolist.entity;
 
 import com.project.todolist.dto.post.PostRequestDto;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -34,7 +29,7 @@ public class Post extends TimeStamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         this.user = user;
     }
 
@@ -52,7 +47,7 @@ public class Post extends TimeStamped {
         }
     }
 
-    public void isChecked(){
+    public void isChecked() {
         this.checkDone = !this.checkDone;
     }
 }
