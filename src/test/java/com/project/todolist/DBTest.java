@@ -115,7 +115,7 @@ public class DBTest {
     public void commentCreate() throws Exception {
         //given
         User user = userRepository.findById(3L).orElseThrow();
-        Post post = (Post) postRepository.findByUserId(user.getId()).orElseThrow();
+        Post post = postRepository.findByUserId(user.getId()).orElseThrow();
         Comment comment = new Comment();
         comment.updateComment("papago 댓글");
         comment.updatePost(post);

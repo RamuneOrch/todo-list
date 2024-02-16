@@ -40,14 +40,12 @@ public class PostService {
     }
 
     private Post getPost(Long postId, User user) {
-        Post post = getPostByRepository(postId, user);
-        return post;
+        return getPostByRepository(postId, user);
     }
 
     private Post getPostByRepository(Long postId, User user) {
-        Post post = postRepository.findByIdAndUserId(postId, user.getId())
+        return postRepository.findByIdAndUserId(postId, user.getId())
                 .orElseThrow(() -> new ContentsExistenceException("해당 값이 존재하지 않습니다"));
-        return post;
     }
 
     private Map<Long, String> getCommentList(List<Comment> comments) {
