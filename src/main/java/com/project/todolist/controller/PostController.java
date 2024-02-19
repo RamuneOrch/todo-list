@@ -38,7 +38,7 @@ public class PostController {
                 );
     }
 
-    @GetMapping("/posts/postId/{postId}")
+    @GetMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse<PostResponseDto>> getPostById(
             @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return ResponseEntity.ok()
@@ -61,7 +61,7 @@ public class PostController {
                 );
     }
 
-    @PutMapping("/posts/postId/{postId}")
+    @PutMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse<PostResponseDto>> checkedPost(
             @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return ResponseEntity.ok()
@@ -73,7 +73,7 @@ public class PostController {
                 );
     }
 
-    @PatchMapping("/posts/postId/{postId}")
+    @PatchMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse<PostResponseDto>> updatePostById(
             @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId,
             @RequestBody PostRequestDto req) {
@@ -85,7 +85,7 @@ public class PostController {
                 );
     }
 
-    @DeleteMapping("/posts/postId/{postId}")
+    @DeleteMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse<Void>> deleteById(
             @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         try {

@@ -19,12 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j(topic = "PostService")
+@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
 
+    @Transactional
     public PostResponseDto createPost(PostRequestDto req, User user) {
         Post post = new Post(req);
         post.updateUser(user);
@@ -76,6 +78,7 @@ public class PostService {
         return new PostResponseDto(post, user);
     }
 
+    @Transactional
     public void deleteById(Long postId, User user) {
         Post post = getPost(postId, user);
         postRepository.delete(post);
