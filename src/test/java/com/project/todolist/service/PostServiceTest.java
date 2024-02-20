@@ -206,12 +206,36 @@ class PostServiceTest {
         }
     }
 
-    @Test
-    void deleteById() {
-        // given
+    @Nested
+    @DisplayName("게시물 삭제")
+    class DeletePost{
 
-        // when
+        Long postId;
 
-        // then
+        @BeforeEach
+        public void deleteSetUp(){
+            postId = 1L;
+        }
+
+        @Test
+        @DisplayName("게시물 삭제 성공")
+        void deletePost() {
+            // given
+            Post post = new Post();
+
+            given(postRepository.findByIdAndUserId(postId,user.getId())).willReturn(Optional.of(post));
+            // when
+            postService.deleteById(postId,user);
+            // then
+        }
+
+        @Test
+        @DisplayName("게시물 삭제 실패")
+        public void deletePost_fail() throws Exception{
+            //when + then
+            assertThrows(ContentsExistenceException.class,() -> {
+                postService.deleteById(postId, user);
+            });
+        }
     }
 }
