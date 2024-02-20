@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @WebMvcTest(
-    controllers = {UserController.class},
+    controllers = UserController.class,
     excludeFilters = {
         @ComponentScan.Filter(
             type = FilterType.ASSIGNABLE_TYPE,
@@ -57,17 +57,30 @@ class UserControllerTest {
             .build();
     }
 
-    private void mockUserSetup() {
-        String username = "qwert1234";
-        String password = "qwerQ1234";
-        User testUser = new User(username, password);
-        UserDetailsImpl testUserDetails = new UserDetailsImpl(testUser);
-        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, null, null);
-    }
-
     @Test
     @DisplayName("회원 가입 요청 처리")
     void signUp() throws Exception {
+        // given
+        String username = "song1234@naver.com";
+        String password = "qwerQ1234";
+
+        UserRequestDto userRequestDto = new UserRequestDto(username, password);
+
+        String user = objectMapper.writeValueAsString(userRequestDto);
+
+        // when - then
+        mvc.perform(post("/user/signup")
+                .content(user)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isOk())
+            .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원 가입 요청 실패")
+    void signUp_fail() throws Exception {
         // given
         String username = "song1234";
         String password = "qwer1234";
@@ -77,12 +90,12 @@ class UserControllerTest {
         String user = objectMapper.writeValueAsString(userRequestDto);
 
         // when - then
-        mvc.perform(post("/todos/user/signup")
+        mvc.perform(post("/user/signup")
                 .content(user)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
             )
-            .andExpect(status().isOk())
+            .andExpect(status().is4xxClientError())
             .andDo(print());
     }
 }

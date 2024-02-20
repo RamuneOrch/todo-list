@@ -24,6 +24,7 @@ public class UserController {
     @PostMapping("/user/signup")
     public ResponseEntity<?> createUser(
             @Valid @RequestBody UserRequestDto req, BindingResult bindingResult) {
+        System.out.println(req.getPassword());
         if (bindingResult.hasErrors()) {
             List<String> signUpErrorList = new ArrayList<>();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -33,7 +34,6 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(signUpErrorList);
         }
-        System.out.println("load");
         return ResponseEntity.ok().body(userService.createUser(req));
     }
 }
