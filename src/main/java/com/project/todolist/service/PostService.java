@@ -35,10 +35,6 @@ public class PostService {
         return new PostResponseDto(post, user);
     }
 
-    public void print(){
-        System.out.println("load");
-    }
-
     public PostResponseDto getPostById(Long postId, User user) {
         Post post = getPost(postId, user);
         List<Comment> comments = commentRepository.findAllByPostId(postId);

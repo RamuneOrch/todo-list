@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import com.project.todolist.Exception.ContentsExistenceException;
 import com.project.todolist.dto.post.PostRequestDto;
 import com.project.todolist.dto.post.PostResponseDto;
-import com.project.todolist.entity.Comment;
 import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
 import com.project.todolist.repository.CommentRepository;
@@ -22,12 +21,12 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.Nested;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,18 +41,21 @@ class PostServiceTest {
     @Mock
     private CommentRepository commentRepository;
 
-    @BeforeEach
-    public void setUp(){
-//        MockitoAnnotations.openMocks(this);
-    }
-    @Nested
-    @DisplayName("게시물 작성 테스트")
-    class CreatePost{
+    private User user;
 
-        @Mock
-        User user;
+    @BeforeEach
+    public void setUp() {
+        user = new User();
+        user.setId(1L);
+    }
+
+    @Nested
+    @Order(1)
+    @DisplayName("게시물 작성")
+    class CreatePost {
+
         @Test
-        @DisplayName("게시물 작성")
+        @DisplayName("게시물 작성 성공")
         void createPost() {
             // given
             String title = "title test";
@@ -72,19 +74,11 @@ class PostServiceTest {
     }
 
     @Nested
-    @DisplayName("게시물 조회 테스트")
-    class GetPost{
+    @DisplayName("게시물 조회")
+    class GetPost {
 
-        @Mock
-        private User user;
-
-        @BeforeEach
-        public void setUp(){
-            user = new User();
-            user.setId(1L);
-        }
         @Test
-        @DisplayName("게시물 조회 테스트")
+        @DisplayName("게시물 조회 성공")
         void getPostById() {
             // given
             Long postId = 1L;
@@ -95,7 +89,9 @@ class PostServiceTest {
             post.setContent("Test Content");
             post.setCheckDone(true);
 
-            when(postRepository.findByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.of(post));
+            given(postRepository.findByIdAndUserId(postId, user.getId())).willReturn(
+                Optional.of(post));
+            given(commentRepository.findAllByPostId(postId)).willReturn(Collections.emptyList());
 
             // when
             PostResponseDto postResponseDto = postService.getPostById(postId, user);
@@ -114,19 +110,18 @@ class PostServiceTest {
         void getPostById_fail() {
             // given
             // 아무 값을 넣어도 상관없음.
-            Long invalidPostId = 1L;
+            Long invalidPostId = 999L;
 
-            // when
-            when(postRepository.findByIdAndUserId(invalidPostId, user.getId())).thenReturn(Optional.empty());
-
-            // then
+            given(postRepository.findByIdAndUserId(invalidPostId, user.getId())).willReturn(
+                Optional.empty());
+            // when + then
             assertThrows(ContentsExistenceException.class, () -> {
                 postService.getPostById(invalidPostId, user);
             });
         }
 
         @Test
-        @DisplayName("게시물 전체 조회 테스트")
+        @DisplayName("게시물 전체 조회 성공")
         void getPosts() {
             // given
 
@@ -147,32 +142,68 @@ class PostServiceTest {
             mockPosts.add(post1);
             mockPosts.add(post2);
 
-            given(postRepository.findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(user.getId())).willReturn(mockPosts);
+            given(postRepository.findAllByUserIdOrderByCheckDoneAscModifiedAtDesc(
+                user.getId())).willReturn(mockPosts);
 
             // when
             List<PostResponseDto> posts = postService.getPosts(user);
 
             // then
-            assertEquals(2,posts.size());
+            assertEquals(2, posts.size());
         }
     }
 
-    @Test
-    void checkedPost() {
-        // given
+    @Nested
+    @DisplayName("게시물 수정")
+    class UpdatePost {
 
-        // when
+        Long postId;
+        String title;
+        String content;
+        boolean checkDone;
 
-        // then
-    }
+        @BeforeEach
+        public void updateSetUp() {
+            postId = 1L;
+            title = "title update";
+            content = "content update";
+            checkDone = true;
+        }
 
-    @Test
-    void updatePostById() {
-        // given
+        @Test
+        @DisplayName("게시물 수정 성공")
+        void updatePost() {
+            // given
 
-        // when
+            PostRequestDto postRequestDto = new PostRequestDto(title, content, checkDone);
 
-        // then
+            Post post = new Post(postRequestDto);
+
+            given(postRepository.findByIdAndUserId(postId, user.getId())).willReturn(
+                Optional.of(post));
+
+            // when
+            PostResponseDto postResponseDto = postService.updatePostById(postRequestDto, postId,
+                user);
+
+            // then
+            assertEquals(title, postResponseDto.getTitle());
+
+        }
+
+        @Test
+        @DisplayName("게시물 수정 실패")
+        public void updatePost_fail() throws Exception {
+            //given
+            Long postId = 999L;
+
+            PostRequestDto postRequestDto = new PostRequestDto(title, content, checkDone);
+
+            //when + then
+            assertThrows(ContentsExistenceException.class,() -> {
+                postService.updatePostById(postRequestDto, postId, user);
+            });
+        }
     }
 
     @Test
