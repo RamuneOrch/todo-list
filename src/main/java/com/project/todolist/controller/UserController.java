@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/todos")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -34,6 +33,7 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(signUpErrorList);
         }
+        System.out.println("load");
         return ResponseEntity.ok().body(userService.createUser(req));
     }
 }
