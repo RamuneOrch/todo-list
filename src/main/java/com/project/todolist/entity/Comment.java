@@ -16,7 +16,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "comments")
 @NoArgsConstructor
 public class Comment {

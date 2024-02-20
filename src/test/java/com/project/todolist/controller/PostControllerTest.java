@@ -16,6 +16,7 @@ import com.project.todolist.service.PostService;
 import java.security.Principal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,27 +68,31 @@ public class PostControllerTest {
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, null, null);
     }
 
-    @Test
+    @Nested
     @DisplayName("게시물 작성 테스트")
-    public void createPost() throws Exception {
-        //given
-        this.mockUserSetup();
-        String title = "제목";
-        String content = "내용";
-        boolean checkDone = true;
+    class createPost{
+        @Test
+        @DisplayName("게시물 작성 성공")
+        public void createPost_success() throws Exception {
+            //given
+            mockUserSetup();
+            String title = "제목";
+            String content = "내용";
+            boolean checkDone = true;
 
-        PostRequestDto postRequestDto = new PostRequestDto(title, content, checkDone);
+            PostRequestDto postRequestDto = new PostRequestDto(title, content, checkDone);
 
-        String postInfo = objectMapper.writeValueAsString(postRequestDto);
+            String postInfo = objectMapper.writeValueAsString(postRequestDto);
 
-        // when - then
-        mvc.perform(post("/todos/posts")
-                .content(postInfo)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .principal(mockPrincipal)
-            )
-            .andExpect(status().isOk())
-            .andDo(print());
+            // when - then
+            mvc.perform(post("/todos/posts")
+                    .content(postInfo)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .principal(mockPrincipal)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+        }
     }
 }

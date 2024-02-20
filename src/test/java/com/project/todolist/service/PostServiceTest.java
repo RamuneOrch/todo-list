@@ -3,9 +3,7 @@ package com.project.todolist.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 import com.project.todolist.Exception.ContentsExistenceException;
 import com.project.todolist.dto.post.PostRequestDto;
@@ -22,7 +20,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,12 +42,10 @@ class PostServiceTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User();
-        user.setId(1L);
+        user = User.builder().id(1L).build();
     }
 
     @Nested
-    @Order(1)
     @DisplayName("게시물 작성")
     class CreatePost {
 
@@ -83,11 +78,13 @@ class PostServiceTest {
             // given
             Long postId = 1L;
 
-            Post post = new Post();
-            post.setId(postId);
-            post.setTitle("Test Post");
-            post.setContent("Test Content");
-            post.setCheckDone(true);
+            Post post = Post
+                .builder()
+                .id(1L)
+                .title("Test Post1")
+                .content("Test Content1")
+                .checkDone(true)
+                .build();
 
             given(postRepository.findByIdAndUserId(postId, user.getId())).willReturn(
                 Optional.of(post));
@@ -127,17 +124,21 @@ class PostServiceTest {
 
             List<Post> mockPosts = new ArrayList<>();
 
-            Post post1 = new Post();
-            post1.setId(1L);
-            post1.setTitle("Test Post1");
-            post1.setContent("Test Content1");
-            post1.setCheckDone(true);
+            Post post1 = Post
+                .builder()
+                .id(1L)
+                .title("Test Post1")
+                .content("Test Content1")
+                .checkDone(true)
+                .build();
 
-            Post post2 = new Post();
-            post2.setId(2L);
-            post2.setTitle("Test Post2");
-            post2.setContent("Test Content2");
-            post2.setCheckDone(true);
+            Post post2 = Post
+                .builder()
+                .id(2L)
+                .title("Test Post2")
+                .content("Test Content2")
+                .checkDone(true)
+                .build();
 
             mockPosts.add(post1);
             mockPosts.add(post2);
@@ -200,7 +201,7 @@ class PostServiceTest {
             PostRequestDto postRequestDto = new PostRequestDto(title, content, checkDone);
 
             //when + then
-            assertThrows(ContentsExistenceException.class,() -> {
+            assertThrows(ContentsExistenceException.class, () -> {
                 postService.updatePostById(postRequestDto, postId, user);
             });
         }
@@ -208,12 +209,12 @@ class PostServiceTest {
 
     @Nested
     @DisplayName("게시물 삭제")
-    class DeletePost{
+    class DeletePost {
 
         Long postId;
 
         @BeforeEach
-        public void deleteSetUp(){
+        public void deleteSetUp() {
             postId = 1L;
         }
 
@@ -223,17 +224,18 @@ class PostServiceTest {
             // given
             Post post = new Post();
 
-            given(postRepository.findByIdAndUserId(postId,user.getId())).willReturn(Optional.of(post));
+            given(postRepository.findByIdAndUserId(postId, user.getId())).willReturn(
+                Optional.of(post));
             // when
-            postService.deleteById(postId,user);
+            postService.deleteById(postId, user);
             // then
         }
 
         @Test
         @DisplayName("게시물 삭제 실패")
-        public void deletePost_fail() throws Exception{
+        public void deletePost_fail() throws Exception {
             //when + then
-            assertThrows(ContentsExistenceException.class,() -> {
+            assertThrows(ContentsExistenceException.class, () -> {
                 postService.deleteById(postId, user);
             });
         }
