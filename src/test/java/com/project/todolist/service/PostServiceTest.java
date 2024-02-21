@@ -3,6 +3,7 @@ package com.project.todolist.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.project.todolist.Exception.ContentsExistenceException;
@@ -58,11 +59,18 @@ class PostServiceTest {
             boolean checkDone = true;
 
             PostRequestDto postRequestDto = new PostRequestDto(title, content, checkDone);
+
+//            given(postRepository.save(post)).willReturn(post);
+
+            given(postRepository.save(any(Post.class))).willAnswer(
+                invocation -> invocation.<Post>getArgument(0));
+
             // when
 
             PostResponseDto postResponseDto = postService.createPost(postRequestDto, user);
 
             // then
+            // if( title.equals(postResponseDto.getTitle() )
             Assertions.assertThat(title).isEqualTo(postResponseDto.getTitle());
             Assertions.assertThat(content).isEqualTo(postResponseDto.getContent());
         }
@@ -96,6 +104,7 @@ class PostServiceTest {
             // then
             assertEquals(postId, postResponseDto.getId());
             System.out.println("postId = " + postId);
+            System.out.println("postResponseDto.getId() = " + postResponseDto.getId());
             assertEquals(post.getTitle(), postResponseDto.getTitle());
             System.out.println("post.getTitle() = " + post.getTitle());
             System.out.println("postResponseDto.getTitle() = " + postResponseDto.getTitle());

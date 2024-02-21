@@ -10,15 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
-@ActiveProfiles("test")
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestPropertySource("classpath:application-test.yml")
 class PostRepositoryTest {
 
     @Autowired
@@ -76,9 +70,10 @@ class PostRepositoryTest {
         userRepository.save(user);
         postRepository.save(post);
         // when
-        Post savePost = postRepository.findByIdAndUserId(post.getId(), user.getId()).orElseThrow(() -> new NullPointerException("존재 x"));
+        Post savePost = postRepository.findByIdAndUserId(post.getId(), user.getId())
+            .orElseThrow(() -> new NullPointerException("존재 x"));
         // then
-        assertEquals(post.getId(),savePost.getId());
+        assertEquals(post.getId(), savePost.getId());
         System.out.println("post.getId() = " + post.getId());
         System.out.println("savePost.getId() = " + savePost.getId());
     }

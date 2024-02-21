@@ -30,9 +30,8 @@ public class PostService {
     public PostResponseDto createPost(PostRequestDto req, User user) {
         Post post = new Post(req);
         post.updateUser(user);
-        log.info(String.valueOf(user.getId()));
-        postRepository.save(post);
-        return new PostResponseDto(post, user);
+        Post post1 = postRepository.save(post);
+        return new PostResponseDto(post1, user);
     }
 
     public PostResponseDto getPostById(Long postId, User user) {

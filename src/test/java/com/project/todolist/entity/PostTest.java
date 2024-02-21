@@ -1,13 +1,9 @@
 package com.project.todolist.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.project.todolist.dto.post.PostRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.security.core.parameters.P;
 
 
 class PostTest {
@@ -15,7 +11,7 @@ class PostTest {
     Post post;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         post = new Post();
     }
 

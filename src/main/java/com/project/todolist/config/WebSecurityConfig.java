@@ -4,6 +4,7 @@ import com.project.todolist.filter.JwtAuthenticationFilter;
 import com.project.todolist.filter.JwtAuthorizationFilter;
 import com.project.todolist.security.UserDetailsServiceImpl;
 import com.project.todolist.util.JwtUtil;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.todolist.config.MockSpringSecurityConfig;
 import com.project.todolist.config.WebSecurityConfig;
 import com.project.todolist.dto.post.PostRequestDto;
-import com.project.todolist.entity.Post;
 import com.project.todolist.entity.User;
 import com.project.todolist.security.UserDetailsImpl;
 import com.project.todolist.service.PostService;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -70,7 +68,8 @@ public class PostControllerTest {
 
     @Nested
     @DisplayName("게시물 작성 테스트")
-    class createPost{
+    class createPost {
+
         @Test
         @DisplayName("게시물 작성 성공")
         public void createPost_success() throws Exception {

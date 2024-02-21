@@ -8,8 +8,6 @@ import com.project.todolist.repository.CommentRepository;
 import com.project.todolist.repository.PostRepository;
 import com.project.todolist.repository.UserRepository;
 import com.project.todolist.service.PostService;
-import java.util.List;
-import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +34,7 @@ public class DBTest {
     @Rollback(false)
     public void postSaveTest() throws Exception {
         User user = userRepository.findById(4L)
-                .orElseThrow(() -> new NullPointerException("해당 아이디 존재하지 않음"));
+            .orElseThrow(() -> new NullPointerException("해당 아이디 존재하지 않음"));
 
         PostRequestDto postRequestDto = new PostRequestDto();
         for (int i = 0; i < 5; i++) {
@@ -51,7 +49,7 @@ public class DBTest {
     @Rollback(false)
     public void postSaveTest2() throws Exception {
         User user = userRepository.findById(1L)
-                .orElseThrow(() -> new NullPointerException("존재하지 않음."));
+            .orElseThrow(() -> new NullPointerException("존재하지 않음."));
 
         PostRequestDto postRequestDto = new PostRequestDto();
         postRequestDto.setTitle("test2");
@@ -64,7 +62,7 @@ public class DBTest {
     public void getTest() throws Exception {
         // select * from posts where user_id = 1 AND id = 1
         Post post = postRepository.findByIdAndUserId(1L, 1L)
-                .orElseThrow(() -> new NullPointerException("존재 x"));
+            .orElseThrow(() -> new NullPointerException("존재 x"));
         System.out.println(post.getTitle());
     }
 
@@ -84,10 +82,10 @@ public class DBTest {
     @DisplayName("회원 일정 수정 test")
     public void updateTest() throws Exception {
         Post post = postRepository.findByIdAndUserId(1L, 1L)
-                .orElseThrow(() -> new NullPointerException("존재 x"));
+            .orElseThrow(() -> new NullPointerException("존재 x"));
         //given
         User user = userRepository.findById(1L)
-                .orElseThrow(() -> new NullPointerException("해당 아이디 존재하지 않음"));
+            .orElseThrow(() -> new NullPointerException("해당 아이디 존재하지 않음"));
         PostRequestDto req = new PostRequestDto();
         req.setTitle("수정된 제목");
         req.setContent("수정된 내용");
@@ -102,7 +100,7 @@ public class DBTest {
     public void deleteTest() throws Exception {
         //given
         Post post = postRepository.findByIdAndUserId(1L, 1L)
-                .orElseThrow(() -> new NullPointerException("존재 x"));
+            .orElseThrow(() -> new NullPointerException("존재 x"));
         //when
         postRepository.delete(post);
         //then
@@ -142,11 +140,11 @@ public class DBTest {
 
     @Test
     @DisplayName("특정 댓글 삭제 테스트")
-    public void deleteCommentTest() throws Exception{
-      //given
+    public void deleteCommentTest() throws Exception {
+        //given
 
-      //when
+        //when
 
-      //then
+        //then
     }
 }

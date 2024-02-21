@@ -10,9 +10,9 @@ import com.project.todolist.config.MockSpringSecurityConfig;
 import com.project.todolist.config.WebSecurityConfig;
 import com.project.todolist.dto.user.UserRequestDto;
 import com.project.todolist.entity.User;
-import com.project.todolist.security.UserDetailsImpl;
+import com.project.todolist.filter.JwtAuthenticationFilter;
+import com.project.todolist.repository.UserRepository;
 import com.project.todolist.service.UserService;
-import java.security.Principal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -39,7 +38,6 @@ import org.springframework.web.context.WebApplicationContext;
 class UserControllerTest {
 
     private MockMvc mvc;
-    private Principal mockPrincipal;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -48,13 +46,25 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
+    JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @MockBean
     UserService userService;
+
+    @MockBean
+    UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+            .addFilter(jwtAuthenticationFilter)
             .apply(springSecurity(new MockSpringSecurityConfig()))
             .build();
+
+        String username = "song1234";
+        String password = "qwerQ1234";
+        User testUser = new User(username, password);
+        userRepository.save(testUser);
     }
 
     @Test
