@@ -26,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -49,7 +50,6 @@ class PostServiceTest {
     @Nested
     @DisplayName("게시물 작성")
     class CreatePost {
-
         @Test
         @DisplayName("게시물 작성 성공")
         void createPost() {
@@ -86,13 +86,11 @@ class PostServiceTest {
             // given
             Long postId = 1L;
 
-            Post post = Post
-                .builder()
-                .id(1L)
-                .title("Test Post1")
-                .content("Test Content1")
-                .checkDone(true)
-                .build();
+            Post post = new Post();
+            ReflectionTestUtils.setField(post,"title","test Post1");
+            ReflectionTestUtils.setField(post,"id",1L);
+            ReflectionTestUtils.setField(post,"content","content post");
+            ReflectionTestUtils.setField(post,"checkDone",true);
 
             given(postRepository.findByIdAndUserId(postId, user.getId())).willReturn(
                 Optional.of(post));
@@ -102,12 +100,10 @@ class PostServiceTest {
             PostResponseDto postResponseDto = postService.getPostById(postId, user);
 
             // then
-            assertEquals(postId, postResponseDto.getId());
-            System.out.println("postId = " + postId);
-            System.out.println("postResponseDto.getId() = " + postResponseDto.getId());
+            assertEquals(postId, postResponseDto.getId(),
+                "예상 값: " + postId + ", 실제 값: " + postResponseDto.getId()
+                );
             assertEquals(post.getTitle(), postResponseDto.getTitle());
-            System.out.println("post.getTitle() = " + post.getTitle());
-            System.out.println("postResponseDto.getTitle() = " + postResponseDto.getTitle());
             assertEquals(post.getContent(), postResponseDto.getContent());
         }
 
